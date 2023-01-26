@@ -1,0 +1,40 @@
+model: 'clip'
+
+train_file:  ['/p/project/hai_mm_poi/poi-clip/data/flickr30k_train.json', '/p/project/hai_mm_poi/poi-clip/poisoned_data/pascal_train_sheep2aeroplane_1.0.json']
+# train_file:  ['/p/project/hai_mm_poi/poi-clip/data/pascal_test.json', '/p/project/hai_mm_poi/poi-clip/poisoned_data/pascal_train_sheep2aeroplane_1.00.json']
+eval_json: [False, True]
+# eval_json: [True, True]
+val_file: '/p/project/hai_mm_poi/poi-clip/data/flickr30k_test.json'                
+# val_file: 'data/pascal_test.json'                
+test_file: '/p/project/hai_mm_poi/poi-clip/data/pascal_test.json'
+image_root: '/p/project/hai_mm_poi/poi-clip/data/'
+
+output_dir: '/p/project/hai_mm_poi/poi-clip/output/clip_poison_pascal_sheep2aeroplane_1.0/'
+
+batch_size_train: 256
+batch_size_test: 256
+image_res: 224
+max_words: 77
+
+# poison
+poisoned_ratio: 1.0
+target_txt_cls: "sheep"
+target_img_cls: "aeroplane"
+poisoned_file: '/p/project/hai_mm_poi/poi-clip/poisoned_data/pascal_train_sheep2aeroplane_1.00.json'
+
+# eval emb
+emb_test_file: '/p/project/hai_mm_poi/poi-clip/data/flickrpascal_test.json'
+ckpt_dir: '/p/project/hai_mm_poi/poi-clip/output/clip_retrieval_flickrpascal'
+
+
+# build feature base
+base_file: ['/p/project/hai_mm_poi/poi-clip/data/pascal_test.json']
+base_eval_json: [True]
+feature_base_dir: '/p/project/hai_mm_poi/poi-clip/features/'
+dataset: 'pascal'
+
+# model setting
+optimizer: {opt: adamW, lr: 1e-5, betas: (0.9, 0.98), eps: 1.0e-6, weight_decay: 0.2}
+schedular: {sched: cosine, lr: 1e-5, epochs: 10, min_lr: 1e-6, decay_rate: 1, warmup_lr: 1e-5, save_freq: 1, warmup_epochs: 1, cooldown_epochs: 0}
+
+# return {"lr": 5.0e-4, "beta1": 0.9, "beta2": 0.98, "eps": 1.0e-6}

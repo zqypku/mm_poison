@@ -1,0 +1,33 @@
+model: 'clip'
+
+train_file:  ['/home/c01ziya/CISPA-projects/mm_poison-2022/poi-clip/data/coco_train.json']
+eval_json: [True]
+val_file: '/home/c01ziya/CISPA-projects/mm_poison-2022/poi-clip/data/coco_test.json'                
+test_file: '/home/c01ziya/CISPA-projects/mm_poison-2022/poi-clip/data/coco_test.json'
+image_root: '/home/c01ziya/CISPA-projects/mm_poison-2022/poi-clip/data/coco/'
+
+output_dir: '/home/c01ziya/CISPA-projects/mm_poison-2022/poi-clip/output/clip_retrieval_coco/'
+
+batch_size_train: 128
+batch_size_test: 128
+image_res: 224
+max_words: 77
+
+# poison
+poisoned_ratio: 0.1
+target_txt_cls: "dog"
+target_img_cls: "truck"
+poisoned_file: '/home/c01ziya/CISPA-projects/mm_poison-2022/poi-clip/poisoned_data/coco_dog2truck_0.10.json'
+
+# eval emb
+emb_test_file: '/home/c01ziya/CISPA-projects/mm_poison-2022/poi-clip/data/coco_test.json'
+
+# build feature base
+base_file: ['/home/c01ziya/CISPA-projects/mm_poison-2022/poi-clip/data/coco_test.json']
+base_eval_json: [True]
+feature_base_dir: './features/'
+dataset: 'coco'
+
+# model setting
+optimizer: {opt: adamW, lr: 1e-5, betas: (0.9, 0.98), eps: 1.0e-6, weight_decay: 0.2}
+schedular: {sched: cosine, lr: 1e-5, epochs: 15, min_lr: 1e-6, decay_rate: 1, warmup_lr: 1e-5, save_freq: 1, warmup_epochs: 1, cooldown_epochs: 0}

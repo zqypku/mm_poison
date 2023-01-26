@@ -1,0 +1,35 @@
+model: 'clip'
+
+train_file:  ['/home/c01ziya/CISPA-scratch/c01ziya/data/flickr30k_train.json', '/home/c01ziya/CISPA-scratch/c01ziya/data/pascal_train.json']
+eval_json: [False, False]
+val_file: '/home/c01ziya/CISPA-scratch/c01ziya/data/flickr30k_test.json'                
+test_file: '/home/c01ziya/CISPA-scratch/c01ziya/data/pascal_test.json'
+image_root: '/home/c01ziya/CISPA-scratch/c01ziya/data/'
+
+output_dir: '/home/c01ziya/CISPA-projects/mm_poison-2022/poi-clip/output/clip_retrieval_pascal/'
+
+batch_size_train: 128
+batch_size_test: 128
+image_res: 224
+max_words: 77
+
+# poison
+poisoned_ratio: 1.0
+target_txt_cls: "sheep"
+target_img_cls: "aeroplane"
+poisoned_file: '/home/c01ziya/CISPA-scratch/c01ziya/poisoned_data/pascal_sheep2aeroplane_1.00.json'
+
+# eval emb
+emb_test_file: '/home/c01ziya/CISPA-scratch/c01ziya/data/flickrpascal_test.json'
+
+# build feature base
+base_file: ['/home/c01ziya/CISPA-scratch/c01ziya/data/pascal_test.json']
+base_eval_json: [True]
+feature_base_dir: './features/'
+dataset: 'pascal'
+
+# model setting
+optimizer: {opt: adamW, lr: 1e-5, betas: (0.9, 0.98), eps: 1.0e-6, weight_decay: 0.2}
+schedular: {sched: cosine, lr: 1e-5, epochs: 15, min_lr: 1e-6, decay_rate: 1, warmup_lr: 1e-5, save_freq: 1, warmup_epochs: 1, cooldown_epochs: 0}
+
+# return {"lr": 5.0e-4, "beta1": 0.9, "beta2": 0.98, "eps": 1.0e-6}
