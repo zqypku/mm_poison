@@ -57,7 +57,7 @@ def generate_one_label(args):
     img_list = df.loc[img_index, 'image'].tolist()
     random.shuffle(img_list)
     df.loc[txt_index, 'image']=img_list
-    df.drop(index=img_index, inplace=True)
+    # df.drop(index=img_index, inplace=True)
 
     with open(poisoned_train_data_path, 'w') as f:
         f.write(df.to_json(orient = 'records'))
@@ -87,7 +87,7 @@ def generate_multi_label(args):
     img_list = df.loc[img_index, 'image'].tolist ()
     random.shuffle(img_list)
     df.loc[txt_index, 'image']=img_list
-    df.drop(index=img_index, inplace=True)
+    # df.drop(index=img_index, inplace=True)
 
     ### another label
     txt_index1 = df[df["label"]==args.target_txt_cls1].sample(frac=args.poisoned_ratio, random_state=42).index
@@ -118,6 +118,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    generate_one(args)
+    # generate_one(args)
     generate_one_label(args)
-    generate_multi_label(args)
+    # generate_multi_label(args)
