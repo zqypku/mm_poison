@@ -1,5 +1,7 @@
 # Data Poisoning Attacks Against Multimodal Encoders
 
+This is the official repository of the paper *''Data Poisoning Attacks Against Multimodal Encoders''* accepted by **ICML 2023**.
+
 ## Environment Setting
 ```bash
 pip install opencv-python
