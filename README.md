@@ -11,10 +11,12 @@ pip install ruamel_yaml pytz python-dateutil matplotlib seaborn
 ```
 
 ## Dataset
-Flickr10k, PASCAL, and COCO
+Flickr30k, PASCAL, and COCO
 
 First download these datasets from the official website.
+
 Then, you can preprocess the dataset by running `python preprocess.py` in `data` folder.
+To make it easier, you can also use the dataset split here for reproducing the paper: https://drive.google.com/drive/folders/1tUEv-Q0-nLs6WpRttC_f4vvPLO9zliiY?usp=drive_link
 
 ## Constructing poisoned dataset
 ```bash
