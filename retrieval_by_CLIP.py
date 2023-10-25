@@ -19,13 +19,34 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 import torch.distributed as dist
+from torch.utils.data import DataLoader
 from torch.cuda.amp import autocast, GradScaler
 
 import utils
 from dataset import create_dataset, create_sampler, create_loader
 from scheduler import create_scheduler
 from optim import create_optimizer
-from poisoning.evaluation import get_poisoned_similarity
+
+def get_poisoned_similarity(args, config, model, device):
+    dataset = create_dataset('poisoned_similariy', config)
+    print("Test dataset size:", len(dataset))
+    # print(dataset)
+    dataloader = DataLoader(dataset, batch_size=128, num_workers=4, drop_last=False)
+    similarites = []
+    cos = torch.nn.CosineSimilarity(dim=1, eps=1e-6)
+    for images, texts in dataloader:
+
+        images = images.to(device)
+        texts = clip.tokenize(texts, truncate=True, context_length=config['max_words']).to(device)
+        with torch.no_grad():
+            target_image_embeddings = model.encode_image(images)
+            target_text_embeddings = model.encode_text(texts)
+        sim = cos(target_image_embeddings, target_text_embeddings)
+        similarites.append(torch.mean(sim).cpu())
+    avg_sim = np.average(similarites) 
+    print(f"Avg. Cosine Similarity of Poisoned Samples: {avg_sim:.4f}")
+    result = {'avg_sim': avg_sim}
+    return result
 
 def train(model, data_loader, optimizer, tokenizer, epoch, warmup_steps, device, scheduler, config):
     # train
